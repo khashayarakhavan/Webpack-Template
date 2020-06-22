@@ -5,6 +5,7 @@ import Data from "Utilities/data.xml";
 import printMe from './print.js';
 
 function component() {
+    
     const element = document.createElement('div');
     const btn = document.createElement("button");
 
@@ -17,7 +18,7 @@ function component() {
     // Add the image to our existing div..
     const myIcon = new Image();
     myIcon.src = Icon;
- 
+
     element.appendChild(myIcon);
     element.appendChild(btn);
 

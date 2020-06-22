@@ -5,9 +5,11 @@
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "webpack:watch": "webpack --watch",
-    "webpack:start": "webpack-dev-server --open",
-    "webpack:build": "webpack"
+    "webpack:watch": "webpack --watch --config webpack.dev.js",
+    "webpack:dev": "webpack-dev-server --open  --config webpack.config.js --env.NODE_ENV=local  --progress --mode development ",
+    "webpack:build": "webpack --config webpack.prod.js --env.NODE_ENV=server --env.production=PRODUCTION --mode production --progress",
+    "webpack:json": "webpack --json > stats.json --progress",
+    "webpack:debug": "webpack --config webpack.config.js --progress"
   },
   "keywords": [],
   "author": "",
@@ -16,14 +18,18 @@
     "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^3.6.0",
     "csv-loader": "^3.0.3",
+    "dotenv-webpack": "^1.8.0",
     "file-loader": "^6.0.0",
     "html-webpack-plugin": "^4.3.0",
     "html-webpack-template": "^6.2.0",
     "mini-css-extract-plugin": "^0.9.0",
+    "postcss-loader": "^3.0.0",
     "style-loader": "^1.2.1",
+    "terser-webpack-plugin": "^3.0.6",
     "webpack": "^4.20.2",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.11.0",
+    "webpack-merge": "^4.2.2",
     "xml-loader": "^1.2.1"
   },
   "dependencies": {
