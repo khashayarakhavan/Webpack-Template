@@ -1,0 +1,22 @@
+@font-face {
+  font-family: 'MyFont';
+  src:  url('./D-DIN.woff2') format('woff2'),
+        url('./D-DIN-Bold.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'OtherFont';
+  src:  url('./Bellatrix.otf') format('otf');
+  font-weight: 600;
+  font-size: 3rem;
+  font-style: normal;
+}
+
+.hello {
+  color: blue;
+  background: url('./Images/User.png');
+  height: 100vh;
+  font-family: 'MyFont';
+}
