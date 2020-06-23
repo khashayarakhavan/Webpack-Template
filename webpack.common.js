@@ -87,10 +87,10 @@ module.exports = {
     disableHostCheck: true, // this can be dangerous, do not use unless on a private LAN in a safe network
     historyApiFallback: true, // true for index.html upon 404, object for multiple paths
     hot: true, // hot module replacement. Depends on HotModuleReplacementPlugin
-    host: "0.0.0.0", // listen on all interfaces
+    host: "127.0.0.1", // listen on all interfaces
     https: false, // true for self-signed, object for cert authority
     noInfo: false, // only errors & warns on hot reload
-    port: 5555,
+    // port: 8080,
   },
   // advance misc config
   cache: false,

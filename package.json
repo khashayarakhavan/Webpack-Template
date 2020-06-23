@@ -7,8 +7,9 @@
     "test": "tests"
   },
   "scripts": {
-    "build": "webpack --config webpack.common.js --mode production",
+    "build": "webpack --config webpack.common.js --mode production --progress",
     "dev": "webpack-dev-server --config webpack.common.js --mode development --open --watch",
+    "webpack:dev": "webpack-dev-server  --config webpack.common.js --mode development --open --watch",
     "test": "echo \"Error: no test specified but lets exit with success so travis builds\" && exit 0",
     "prestart": "npm run build",
     "start": "babel-node src/server/index.js",
