@@ -1,151 +1,105 @@
+// NodeJS
+const path = require("path");
+const webpack = require("webpack");
 
-  const path = require("path");
-  const webpack = require("webpack");
-  const HtmlWebpackPlugin = require("html-webpack-plugin");
-  const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-  const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-  const Dotenv = require("dotenv-webpack");
-  const devMode = process.env.NODE_ENV === "development";
- 
-  module.exports = {
-    entry: {
-      app: "./src/index.js",
-      alert: "./src/alert.js",
-    },
-    output: {
-      filename: "[name].bundle.js",
-      path: path.resolve(__dirname, "dist"),
-      // the filename template for entry chunks
-      publicPath: "/assets/", // string
-      // the url to the output directory resolved relative to the HTML page
-      library: "MyLibrary", // string,
-      // the name of the exported library
-      libraryTarget: "umd", // universal module definition
-      // the type of the exported library
-      /* Advanced output configuration (click to show) */
-      /* Expert output configuration (on own risk) */
-    },
-    resolve: {
-      alias: {
-        Utilities: path.resolve(__dirname, "src/Utilities/"),
-        Images: path.resolve(__dirname, "src/Images/"),
-        Templates: path.resolve(__dirname, "src/Templates/"),
+// Webpack plugins
+const HtmlWebPackPlugin = require("html-webpack-plugin");
+
+// Helper Variables
+const paths = {
+  entryClient: path.resolve(__dirname, "src", "client", "index.js"),
+  src: path.resolve(__dirname, "src", "client", "index.html"),
+  dest: path.resolve(__dirname, "public"),
+  destHtml: path.resolve(__dirname, "public", "index.html"),
+  contentBase: path.join(__dirname, "public"),
+};
+
+module.exports = {
+  devtool: "source-map",
+  entry: ["@babel/polyfill", "react-hot-loader/patch", paths.entryClient],
+  output: {
+    path: paths.dest,
+    filename: "bundle.js",
+    publicPath: "/",
+    libraryTarget: "umd",
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(js|jsx)$/,
+        loader: "babel-loader",
+        exclude: /node_modules/,
       },
-    },
-    devtool: "inline-source-map",
-    devServer: {
-      contentBase: "./dist",
-      hot: true,
-    },
-
-    plugins: [
-      new webpack.DefinePlugin({
-        NODE_ENV: JSON.stringify("development"),
-        PRODUCTION: JSON.stringify("PRODUCTION"),
-        VERSION: JSON.stringify("5fa3b9"),
-        BROWSER_SUPPORTS_HTML5: true,
-        TWO: "1+1",
-        "typeof window": JSON.stringify("object"),
-        "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
-        SERVICE_URL: JSON.stringify("https://dev.example.com"),
-        NICE_FEATURE: JSON.stringify(true),
-        EXPERIMENTAL_FEATURE: JSON.stringify(false),
-      }),
-      new Dotenv({
-        path: "./.env", // load this now instead of the ones in '.env'
-        safe: true, // load '.env.example' to verify the '.env' variables are all set. Can also be a string to a different file.
-        allowEmptyValues: true, // allow empty variables (e.g. `FOO=`) (treat it as empty string, rather than missing)
-        systemvars: true, // load all the predefined 'process.env' variables which will trump anything local per dotenv specs.
-        silent: true, // hide any errors
-        defaults: false, // load '.env.defaults' as the default values if empty.
-      }),
-      new MiniCssExtractPlugin({
-        moduleFilename: ({ name }) => `${name.replace("/js/", "/css/")}.css`,
-        // Options similar to the same options in webpackOptions.output
-        // both options are optional
-        filename: devMode ? "[name].css" : "[name].[hash].css",
-        chunkFilename: devMode ? "[id].css" : "[id].[hash].css",
-        ignoreOrder: false, // Enable to remove warnings about conflicting order
-      }),
-      new CleanWebpackPlugin({ cleanStaleWebpackAssets: false }),
-      new HtmlWebpackPlugin({
-        title: "Output Management",
-      }),
-    ],
-    module: {
-      rules: [
-      //   {
-      //   test: /\.jsx?$/,
-      //   include: [
-      //     path.resolve(__dirname, "app")
-      //   ],
-      //   exclude: [
-      //     path.resolve(__dirname, "app/demo-files")
-      //   ],
-      //   // these are matching conditions, each accepting a regular expression or string
-      //   // test and include have the same behavior, both must be matched
-      //   // exclude must not be matched (takes preferrence over test and include)
-      //   // Best practices:
-      //   // - Use RegExp only in test and for filename matching
-      //   // - Use arrays of absolute paths in include and exclude
-      //   // - Try to avoid exclude and prefer include
-      //   issuer: { test, include, exclude },
-      //   // conditions for the issuer (the origin of the import)
-      //   enforce: "pre",
-      //   enforce: "post",
-      //   // flags to apply these rules, even if they are overridden (advanced option)
-      //   loader: "babel-loader",
-      //   // the loader which should be applied, it'll be resolved relative to the context
-      //   options: {
-      //     presets: ["es2015"]
-      //   },
-      //   // options for the loader
-      // },
-      // {
-      //   test: /\.html$/,
-      //   use: [
-      //     // apply multiple loaders and options
-      //     "htmllint-loader",
-      //     {
-      //       loader: "html-loader",
-      //       options: {
-             
-      //       }
-      //     }
-      //   ]
-      // },
-        {
-          test: /\.(sa|sc|c)ss$/,
-          use: [
-            {
-              loader: MiniCssExtractPlugin.loader,
-              options: {
-                // only enable hot in development
-                hmr: process.env.NODE_ENV === "development",
-                // if hmr does not work, this is a forceful method.
-                reloadAll: true,
-              },
+      {
+        test: /\.html$/,
+        use: [
+          {
+            loader: "html-loader",
+            options: { minimize: true },
+          },
+        ],
+      },
+      {
+        test: /\.(scss|css)$/,
+        use: [
+          {
+            loader: "style-loader",
+          },
+          {
+            loader: "css-loader",
+            options: {
+              sourceMap: true,
             },
-            "css-loader",
-            // "postcss-loader",
-          ],
-        },
-        {
-          test: /\.(png|svg|jpg|gif)$/,
-          use: ["file-loader"],
-        },
-        {
-          test: /\.(woff|woff2|eot|ttf|otf)$/,
-          use: ["file-loader"],
-        },
-        {
-          test: /\.(csv|tsv)$/,
-          use: ["csv-loader"],
-        },
-        {
-          test: /\.xml$/,
-          use: ["xml-loader"],
-        },
-      ],
+          },
+          // {
+          //   loader: "sass-loader",
+          //   options: {
+          //     sourceMap: true,
+          //   },
+          // },
+        ],
+      },
+    ],
+  },
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    new HtmlWebPackPlugin({
+      template: paths.src,
+      filename: paths.destHtml,
+    }),
+  ],
+  performance: {
+    hints: "warning",
+    maxAssetSize: 2000000, // Bytes..
+    maxEntrypointSize: 4000000, // Bytes..
+    assetFilter: function (filename) {
+      // If you would like to, you can exclude file types, names, etc here by providing an expression.
+      return true;
     },
-  };
+  },
+  devServer: {
+    proxy: {
+      // proxy URLs to backend development server
+      "/api": "http://localhost:3000",
+    },
+    contentBase: paths.contentBase,
+    compress: true, // enable gzip compression
+    disableHostCheck: true, // this can be dangerous, do not use unless on a private LAN in a safe network
+    historyApiFallback: true, // true for index.html upon 404, object for multiple paths
+    hot: true, // hot module replacement. Depends on HotModuleReplacementPlugin
+    host: "0.0.0.0", // listen on all interfaces
+    https: false, // true for self-signed, object for cert authority
+    noInfo: false, // only errors & warns on hot reload
+    port: 5555,
+  },
+  // advance misc config
+  cache: false,
+  bail: true,
+  profile: true,
+  watch: false,
+  watchOptions: {
+    aggregateTimeout: 1000,
+    poll: true,
+    poll: 500,
+  },
+};

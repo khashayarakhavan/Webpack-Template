@@ -1,41 +1,62 @@
 {
-  "name": "webpack-demo",
-  "version": "1.0.0",
-  "description": "",
-  "private": true,
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "webpack:watch": "webpack --watch --config webpack.dev.js",
-    "webpack:dev": "webpack-dev-server --open  --config webpack.config.js --env.NODE_ENV=local  --progress --mode development ",
-    "webpack:build": "webpack --config webpack.prod.js --env.NODE_ENV=server --env.production=PRODUCTION --mode production --progress",
-    "webpack:json": "webpack --json > stats.json --progress",
-    "webpack:debug": "webpack --config webpack.config.js --progress"
+  "name": "react-node-webpack-boilerplate",
+  "version": "0.0.0-0",
+  "description": "React/Nodejs + Webpack",
+  "main": "build/bundle.js",
+  "directories": {
+    "test": "tests"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "scripts": {
+    "build": "webpack --config webpack.common.js --mode production",
+    "dev": "webpack-dev-server --config webpack.common.js --mode development --open --watch",
+    "test": "echo \"Error: no test specified but lets exit with success so travis builds\" && exit 0",
+    "prestart": "npm run build",
+    "start": "babel-node src/server/index.js",
+    "start:docker": "docker-compose up",
+    "upgradeDeps": "ncu -u",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FittedTech/react-node-webpack.git"
+  },
+  "keywords": [
+    "react",
+    "express",
+    "node",
+    "webpack",
+    "webpack 4",
+    "mern",
+    "boilerplate"
+  ],
+  "author": "Conner Aiken",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/FittedTech/react-node-webpack/issues"
+  },
+  "homepage": "https://github.com/FittedTech/react-node-webpack#readme",
   "devDependencies": {
-    "babel-loader": "^8.1.0",
-    "clean-webpack-plugin": "^3.0.0",
-    "css-loader": "^3.6.0",
-    "csv-loader": "^3.0.3",
-    "dotenv-webpack": "^1.8.0",
-    "file-loader": "^6.0.0",
-    "html-loader": "^1.1.0",
-    "html-webpack-plugin": "^4.3.0",
-    "html-webpack-template": "^6.2.0",
-    "htmllint-loader": "^2.1.4",
-    "mini-css-extract-plugin": "^0.9.0",
-    "postcss-loader": "^3.0.0",
-    "style-loader": "^1.2.1",
-    "terser-webpack-plugin": "^3.0.6",
-    "webpack": "^4.20.2",
-    "webpack-cli": "^3.1.2",
-    "webpack-dev-server": "^3.11.0",
-    "webpack-merge": "^4.2.2",
-    "xml-loader": "^1.2.1"
+    "css-loader": "^2.1.1",
+    "dotenv": "^6.2.0",
+    "express": "^4.16.4",
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^3.2.0",
+    "node-sass": "^4.11.0",
+    "react": "^16.8.4",
+    "react-dom": "^16.8.4",
+    "react-hot-loader": "^4.8.0",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.1",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.2.3",
+    "webpack-dev-server": "^3.2.1"
   },
   "dependencies": {
-    "lodash": "^4.17.15"
+    "@babel/core": "^7.4.0",
+    "@babel/node": "^7.2.2",
+    "@babel/polyfill": "^7.4.0",
+    "@babel/preset-env": "^7.4.2",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.5"
   }
 }
