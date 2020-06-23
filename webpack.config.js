@@ -101,8 +101,8 @@ var config = {
 };
 
 module.exports = (env, argv) => {
-  console.log("NODE_ENV: ", env.NODE_ENV); // 'local'
-  console.log("Production: ", env.production); // true
+  // console.log("NODE_ENV: ", env.NODE_ENV); // 'local'
+  // console.log("Production: ", env.production); // true
 
   if (argv.mode === "development") {
     console.log("Aftofl Nanai :D");

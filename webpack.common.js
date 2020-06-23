@@ -1,26 +1,34 @@
 // NodeJS
 const path = require("path");
 const webpack = require("webpack");
-
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 // Webpack plugins
 const HtmlWebPackPlugin = require("html-webpack-plugin");
-
+const ASSETS_PATH = process.env.ASSETS_PATH;
 // Helper Variables
 const paths = {
   entryClient: path.resolve(__dirname, "src", "client", "index.js"),
+  alertClient: path.resolve(__dirname, "src", "client", "alert.js"),
+  
   src: path.resolve(__dirname, "src", "client", "index.html"),
-  dest: path.resolve(__dirname, "public"),
-  destHtml: path.resolve(__dirname, "public", "index.html"),
-  contentBase: path.join(__dirname, "public"),
+  // dest: path.resolve(__dirname, "public"),
+  dest: path.resolve(__dirname, 'dist/assets'),
+  // destHtml: path.resolve(__dirname, "public", "index.html"),
+  destHtml: path.resolve(__dirname, "dist/assets", "index.html"),
+  // contentBase: path.join(__dirname, "public"),
+  contentBase: path.join(__dirname, "dist"),
 };
 
 module.exports = {
   devtool: "source-map",
-  entry: ["@babel/polyfill", "react-hot-loader/patch", paths.entryClient],
+  entry: {
+    app: [("@babel/polyfill", "react-hot-loader/patch", paths.entryClient)],
+    alert: [("@babel/polyfill", "react-hot-loader/patch", paths.alertClient)],
+  },
   output: {
     path: paths.dest,
-    filename: "bundle.js",
-    publicPath: "/",
+    filename: "[name].bundle.js",
+    publicPath: ASSETS_PATH,
     libraryTarget: "umd",
   },
   module: {
@@ -62,6 +70,10 @@ module.exports = {
     ],
   },
   plugins: [
+    new webpack.DefinePlugin({
+      "process.env.ASSETS_PATH": JSON.stringify(ASSETS_PATH),
+    }),
+    // new CleanWebpackPlugin({ cleanStaleWebpackAssets: false }),
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebPackPlugin({
       template: paths.src,
