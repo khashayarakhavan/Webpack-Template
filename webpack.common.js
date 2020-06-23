@@ -4,23 +4,25 @@ const webpack = require("webpack");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 // Webpack plugins
 const HtmlWebPackPlugin = require("html-webpack-plugin");
-const ASSETS_PATH = process.env.ASSETS_PATH;
+const ASSETS_PATH = process.env.ASSETS_PATH; // relative path to address static content.
+// i.e. images or other static content such as fonts and data.
 // Helper Variables
 const paths = {
   entryClient: path.resolve(__dirname, "src", "client", "index.js"),
   alertClient: path.resolve(__dirname, "src", "client", "alert.js"),
   
   src: path.resolve(__dirname, "src", "client", "index.html"),
-  // dest: path.resolve(__dirname, "public"),
-  dest: path.resolve(__dirname, 'dist/assets'),
-  // destHtml: path.resolve(__dirname, "public", "index.html"),
-  destHtml: path.resolve(__dirname, "dist/assets", "index.html"),
-  // contentBase: path.join(__dirname, "public"),
-  contentBase: path.join(__dirname, "dist"),
+  // dest: path.resolve(__dirname, "public/assets"),
+  dest: path.resolve(__dirname, 'dist/build-1/assets/'), // where Bundles are saved.
+  // destHtml: path.resolve(__dirname, "public/assets", "index.html"),
+  destHtml: path.resolve(__dirname, "dist/build-1/assets", "index.html"), // where final HTML is saved.
+  // contentBase: path.join(__dirname, "public/assets"),
+  contentBase: path.join(__dirname, "dist/build-1/"),
 };
 
 module.exports = {
   devtool: "source-map",
+  
   entry: {
     app: [("@babel/polyfill", "react-hot-loader/patch", paths.entryClient)],
     alert: [("@babel/polyfill", "react-hot-loader/patch", paths.alertClient)],
@@ -30,6 +32,13 @@ module.exports = {
     filename: "[name].bundle.js",
     publicPath: ASSETS_PATH,
     libraryTarget: "umd",
+  },
+  resolve: {
+    alias: {
+      Utilities: path.resolve(__dirname, "src/Utilities/"),
+      Images: path.resolve(__dirname, "src/Images/"),
+      Templates: path.resolve(__dirname, "src/Templates/"),
+    },
   },
   module: {
     rules: [

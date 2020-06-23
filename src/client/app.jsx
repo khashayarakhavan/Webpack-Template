@@ -15,6 +15,7 @@ class App extends React.Component {
     return (
       <div>
         <p>React reporting in!</p>
+        <a href="/assets/icons/user.png">dalam</a>
       </div>
     );
   }
@@ -23,6 +24,5 @@ class App extends React.Component {
 export default App;
 
 ReactDOM.render(<App />, document.getElementById("app"));
-
 
 module.hot.accept();

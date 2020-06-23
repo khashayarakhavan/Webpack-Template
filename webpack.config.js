@@ -5,10 +5,13 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const Dotenv = require("dotenv-webpack");
 const devMode = process.env.NODE_ENV === 'development';
+const paths = {
+  entryClient: path.resolve(__dirname, "src", "client", "index.js"),
+};
 
 var config = {
   entry: {
-    app: "./src/index.js",
+    app: paths.entryClient,
     alert: "./src/alert.js",
   },
   output: {

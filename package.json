@@ -15,7 +15,12 @@
     "start": "babel-node src/server/index.js",
     "start:docker": "docker-compose up",
     "upgradeDeps": "ncu -u",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "webpack:watch": "webpack --watch --config webpack.dev.js",
+    "webpack:dev2": "webpack-dev-server --open  --config webpack.config.js --env.NODE_ENV=local  --progress --mode development ",
+    "webpack:build": "webpack --config webpack.common.js --mode production",
+    "webpack:json": "webpack --json > stats.json --progress",
+    "webpack:debug": "webpack --config webpack.config.js --progress"
   },
   "repository": {
     "type": "git",
